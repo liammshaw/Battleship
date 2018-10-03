@@ -5,16 +5,74 @@ public class BehindTheScenes
 	{
 		static ArrayList<BattleShip> ships = new ArrayList<BattleShip>();
 		static String name;
+		static int[][] enemysBattlefield;
 		static int[][] battlefield;
 		static int level;
 		static Scanner userString = new Scanner(System.in);
 		static Scanner userInt = new Scanner(System.in);
 		static int row;
 		static int col;
-//		public static void generateRandomShips()
-//			{
-//			
-//			}
+		static int firstRow;
+		static int secondRow;
+		
+		public static void generateRandomShips()
+			{
+				// generate longest ship 
+				row = (int) (Math.random() * battlefield.length);
+				firstRow = row;
+				int start = battlefield[row].length - ships.get(0).getSize();
+				col = (int) (Math.random() * start);
+				for(int i = 0; i < ships.get(0).getSize(); i++)
+					{
+						enemysBattlefield[row][col] = 1;
+						col++;
+					}
+				
+				// generate medium ship
+				boolean run = true;
+				do 
+					{
+						row = (int) (Math.random() * battlefield.length);
+						if (row != firstRow)
+							{
+								secondRow = row; 
+								start = battlefield[row].length - ships.get(1).getSize();
+								col = (int) (Math.random() * start);
+								for(int i = 0; i < ships.get(1).getSize(); i++)
+									{
+										enemysBattlefield[row][col] = 1;
+										col++;
+									}
+								run = false;
+							}
+						else 
+							{
+								run = true; 
+							}
+					} while (run == true);
+				
+				run = true;
+				do 
+					{
+						row = (int) (Math.random() * battlefield.length);
+						if (row != firstRow && row != secondRow)
+							{
+								start = battlefield[row].length - ships.get(2).getSize();
+								col = (int) (Math.random() * start);
+								for(int i = 0; i < ships.get(2).getSize(); i++)
+									{
+										enemysBattlefield[row][col] = 1;
+										col++;
+									}
+								run = false;
+							}
+						else 
+							{
+								run = true; 
+							}
+					} while (run == true);
+				
+			}
 		public static void promptUser()
 			{
 				System.out.println("Enter your name");
@@ -30,14 +88,20 @@ public class BehindTheScenes
 					{
 						easy();
 						nameShips();
+						generateRandomShips();
 						placeShips();
+						userGuess();
 						computerGuesses();
 					}
 				else if (level == 2)
 					{
 						medium();
 						nameShips();
-					}
+						generateRandomShips();
+						placeShips();
+						userGuess();
+						computerGuesses();
+						}
 				else 
 					{
 						hard();
@@ -50,17 +114,12 @@ public class BehindTheScenes
 				ships.add(new BattleShip(3, "2"));
 				ships.add(new BattleShip(2, "3"));
 				battlefield = new int [5][5];
-				for (int r = 0; r < battlefield.length; r++)
-					{
-						for (int c = 0; c < battlefield.length; c++)
-							{
-								battlefield[r][c] = 0;
-							}
-					}
+				enemysBattlefield = new int [5][5];
 			}
 		public static void medium()
 			{
 				battlefield = new int [7][7];
+				enemysBattlefield = new int [7][7];
 				ships.add(new BattleShip(4, "1"));
 				ships.add(new BattleShip(3, "2"));
 				ships.add(new BattleShip(2, "3"));
@@ -68,6 +127,7 @@ public class BehindTheScenes
 		public static void hard()
 			{
 				battlefield = new int [10][10];
+				enemysBattlefield = new int [10][10];
 				ships.add(new BattleShip(4, "1"));
 				ships.add(new BattleShip(3, "2"));
 				ships.add(new BattleShip(2, "3"));
@@ -87,6 +147,15 @@ public class BehindTheScenes
 			}
 		public static void placeShips()
 			{
+				System.out.println("This is the battlefield");
+				for (int r = 0; r < battlefield.length; r++)
+					{
+						for (int c = 0; c < battlefield.length; c++)
+							{
+								System.out.print(battlefield[r][c] + " ");
+							}
+						System.out.println("");
+					}
 				System.out.println("Please put your ships together");
 				for (int i = 0; i < 1; i++)
 					{
@@ -134,6 +203,31 @@ public class BehindTheScenes
 				System.out.println("Is this how you wanted to lay out your ships? (1 represents a ship)");
 			}
 		public static void computerGuesses()
+			{
+				row = (int) (Math.random() * battlefield.length);
+				col = (int) (Math.random() * battlefield[row].length);
+				battlefield[row][col]= 2;
+			}
+		public static void userGuess()
+			{
+				System.out.println("What row would you like to guess?");
+				row = userInt.nextInt();
+				System.out.println("What column would you like to guess?");
+				col = userInt.nextInt();
+				battlefield[row][col] = 2;
+			}
+		public static void printBattlefield()
+			{
+				for (int r = 0; r < battlefield.length; r++)
+					{
+						for (int c = 0; c < battlefield.length; c++)
+							{
+								System.out.print(battlefield[r][c] + " ");
+							}
+						System.out.println("");
+					}
+			}
+		public static void evaluateGuess()
 			{
 				
 			}
