@@ -16,6 +16,7 @@ public class BehindTheScenes
 		static int secondRow;
 		static boolean continueGuessing;
 		static int sum;
+		static int rowSum;
 		
 		public static void generateRandomShips()
 			{
@@ -94,13 +95,15 @@ public class BehindTheScenes
 						easy();
 						nameShips();
 						generateRandomShips();
-						placeShips();
-						printEnemysBattlefield();
+						//placeShips();
 						do 
 							{
+								printEnemysBattlefield();
 								userGuess();
 								evaluateGuess();
+								checkForOnes();
 							}while(continueGuessing == true);	
+						finishGame();
 					}
 				else if (level == 2)
 					{
@@ -259,36 +262,17 @@ public class BehindTheScenes
 			}
 		public static void evaluateGuess()
 			{
-				for (int r = 0; r < enemysBattlefield.length; r++)
-					{
-						for (int c = 0; c < enemysBattlefield[r].length; c++)
-							{
-								if(enemysBattlefield[r][c] == 1)
-									{
-										sum += 1;
-									}
-							}
-					}
-				if(sum >= 0) 
-					{
-						continueGuessing =  true; 
-					}
-				else 
-					{
-						continueGuessing = false;
-					}
-				enemysBattlefield[row][col]= 0;
 				if(enemysBattlefield[row][col] == 1)
 					{
 						System.out.println("That's a hit!");
-						for (int c = 0; c < enemysBattlefield[row].length; c++)
+						for (int i = 0; i < enemysBattlefield[row].length; i++)
 							{
-								if(enemysBattlefield[row][c] == 1)
+								if(enemysBattlefield[row][i] == 1)
 									{
-										sum += 1;
+										rowSum += 1;
 									}
 							}
-						if (sum == 0)
+						if (rowSum == 0)
 							{
 								if (ships.get(3).getRow() == row)
 									{
@@ -307,6 +291,20 @@ public class BehindTheScenes
 				else 
 					{
 						System.out.println("That's a miss!");
+					}
+				enemysBattlefield[row][col]= 0;
+			}
+		public static void checkForOnes()
+			{
+				for (int r = 0; r < enemysBattlefield.length; r++)
+					{
+						for (int c = 0; c < enemysBattlefield[r].length; c++)
+							{
+								if(enemysBattlefield[r][c] == 0)
+									{
+										sum += 1;
+									}
+							}
 					}
 			}
 		public static void finishGame()
