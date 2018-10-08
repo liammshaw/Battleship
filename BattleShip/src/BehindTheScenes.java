@@ -17,6 +17,12 @@ public class BehindTheScenes
 		static boolean continueGuessing;
 		static int sum;
 		static int rowSum;
+		static int userRow;
+		static int userCol;
+		static int computerRow;
+		static int computerCol;
+		static int enemysSum;
+		static int userSum;
 		
 		public static void generateRandomShips()
 			{
@@ -95,29 +101,25 @@ public class BehindTheScenes
 						easy();
 						nameShips();
 						generateRandomShips();
-						//placeShips();
+						placeShips();
 						do 
 							{
 								printEnemysBattlefield();
 								userGuess();
 								evaluateGuess();
+								computerGuesses();
+								evaluateComputerGuess();
 								checkForOnes();
 							}while(continueGuessing == true);	
 						finishGame();
 					}
 				else if (level == 2)
 					{
-						medium();
-						nameShips();
-						generateRandomShips();
-						placeShips();
-						userGuess();
-						computerGuesses();
-						}
+						
+					}
 				else 
 					{
-						hard();
-						nameShips();
+						
 					}
 			}
 		public static void easy()
@@ -125,9 +127,9 @@ public class BehindTheScenes
 				ships.add(new BattleShip(4, "1",0));
 				ships.add(new BattleShip(3, "2",0));
 				ships.add(new BattleShip(2, "3",0));
-				ships.add(new BattleShip(4, "computer ship 1", 0));
-				ships.add(new BattleShip(3, "computer ship 2", 0));
-				ships.add(new BattleShip(2, "computer ship 3", 0));
+				ships.add(new BattleShip(4, "computer's longest ship", 0));
+				ships.add(new BattleShip(3, "computer's medium sized ship", 0));
+				ships.add(new BattleShip(2, "computer's shortest ship", 0));
 				battlefield = new int [5][5];
 				enemysBattlefield = new int [5][5];
 			}
@@ -138,9 +140,9 @@ public class BehindTheScenes
 				ships.add(new BattleShip(4, "1",0));
 				ships.add(new BattleShip(3, "2",0));
 				ships.add(new BattleShip(2, "3",0));
-				ships.add(new BattleShip(4, "computer ship 1", 0));
-				ships.add(new BattleShip(3, "computer ship 2", 0));
-				ships.add(new BattleShip(2, "computer ship 3", 0));
+				ships.add(new BattleShip(4, "computer's longest ship", 0));
+				ships.add(new BattleShip(3, "computer's medium sized ship", 0));
+				ships.add(new BattleShip(2, "computer's smallest ship", 0));
 			}
 		public static void hard()
 			{
@@ -149,9 +151,9 @@ public class BehindTheScenes
 				ships.add(new BattleShip(4, "1",0));
 				ships.add(new BattleShip(3, "2",0));
 				ships.add(new BattleShip(2, "3",0));
-				ships.add(new BattleShip(4, "computer ship 1", 0));
-				ships.add(new BattleShip(3, "computer ship 2", 0));
-				ships.add(new BattleShip(2, "computer ship 3", 0));
+				ships.add(new BattleShip(4, "computer's longest ship", 0));
+				ships.add(new BattleShip(3, "computer's medium sized ship", 0));
+				ships.add(new BattleShip(2, "computer's shortest ship", 0));
 			}
 		public static void nameShips()
 			{
@@ -228,15 +230,15 @@ public class BehindTheScenes
 			}
 		public static void computerGuesses()
 			{
-				row = (int) (Math.random() * battlefield.length);
-				col = (int) (Math.random() * battlefield[row].length);
+				computerRow = (int) (Math.random() * battlefield.length);
+				computerCol = (int) (Math.random() * battlefield[row].length);
 			}
 		public static void userGuess()
 			{
 				System.out.println("What row would you like to guess?");
-				row = userInt.nextInt()-1;
+				userRow = userInt.nextInt()-1;
 				System.out.println("What column would you like to guess?");
-				col = userInt.nextInt()-1;
+				userCol = userInt.nextInt()-1;
 			}
 		public static void printBattlefield()
 			{
@@ -262,23 +264,25 @@ public class BehindTheScenes
 			}
 		public static void evaluateGuess()
 			{
-				if(enemysBattlefield[row][col] == 1)
+				if(enemysBattlefield[userRow][userCol] == 1)
 					{
+						rowSum = 0;
 						System.out.println("That's a hit!");
-						for (int i = 0; i < enemysBattlefield[row].length; i++)
+						enemysBattlefield[userRow][userCol]= 0;
+						for (int i = 0; i < enemysBattlefield[userRow].length; i++)
 							{
-								if(enemysBattlefield[row][i] == 1)
+								if(enemysBattlefield[userRow][i] == 1)
 									{
 										rowSum += 1;
 									}
 							}
 						if (rowSum == 0)
 							{
-								if (ships.get(3).getRow() == row)
+								if (ships.get(3).getRow() == userRow)
 									{
 										System.out.println("You sunk " + ships.get(3).getName() + "!");
 									}
-								else if(ships.get(4).getRow() == row)
+								else if(ships.get(4).getRow() == userRow)
 									{
 										System.out.println("You sunk " + ships.get(4).getName() + "!");
 									}
@@ -292,26 +296,85 @@ public class BehindTheScenes
 					{
 						System.out.println("That's a miss!");
 					}
-				enemysBattlefield[row][col]= 0;
+			}
+		public static void evaluateComputerGuess()
+			{
+				System.out.println("The computer guessed " + computerRow + ", " + computerCol);
+				if(battlefield[computerRow][computerCol] == 1)
+					{
+						rowSum = 0;
+						System.out.println("The computer hit!");
+						battlefield[computerRow][computerCol]= 0;
+						for (int i = 0; i < battlefield[computerRow].length; i++)
+							{
+								if(battlefield[computerRow][i] == 1)
+									{
+										rowSum += 1;
+									}
+							}
+						if (rowSum == 0)
+							{
+								if (ships.get(0).getRow() == computerRow)
+									{
+										System.out.println("The computer sunk " + ships.get(0).getName() + "!");
+									}
+								else if(ships.get(1).getRow() == computerRow)
+									{
+										System.out.println("the computer sunk " + ships.get(1).getName() + "!");
+									}
+								else 
+									{
+										System.out.println("the computer sunk " + ships.get(2).getName()+"!");
+									}
+							}
+					}
+				else 
+					{
+						System.out.println("The computer missed!");
+					}
 			}
 		public static void checkForOnes()
 			{
+				enemysSum = 0;
 				for (int r = 0; r < enemysBattlefield.length; r++)
 					{
 						for (int c = 0; c < enemysBattlefield[r].length; c++)
 							{
-								if(enemysBattlefield[r][c] == 0)
+								if(enemysBattlefield[r][c] == 1)
 									{
-										sum += 1;
+										enemysSum += 1;
 									}
 							}
+					}
+				userSum = 0;
+				for (int r = 0; r < battlefield.length; r++)
+					{
+						for (int c = 0; c < battlefield[r].length; c++)
+							{
+								if(battlefield[r][c] == 1)
+									{
+										userSum += 1;
+									}
+							}
+					}
+				if(enemysSum == 0 || userSum == 0)
+					{
+						continueGuessing = false;
+					}
+				else 
+					{
+						continueGuessing = true; 
 					}
 			}
 		public static void finishGame()
 			{
-				if (continueGuessing == false)
+				if (continueGuessing == false && enemysSum == 0)
 					{
 						System.out.println("Game over you won!!");
+					}
+				else
+					{
+						System.out.println("Sorry you lost!");
 					}
 			}
 	}
