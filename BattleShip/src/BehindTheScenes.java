@@ -15,7 +15,6 @@ public class BehindTheScenes
 		static int firstRow;
 		static int secondRow;
 		static boolean continueGuessing;
-		static int sum;
 		static int rowSum;
 		static int userRow;
 		static int userCol;
@@ -179,13 +178,13 @@ public class BehindTheScenes
 		public static void nameShips()
 			{
 				System.out.println("It's time name your ships");
-				System.out.println("What would you like to name your longest ship?(size 4)");
+				System.out.println("What would you like to name your aircraft carrier?(size 4)");
 				String name = userString.nextLine();
 				ships.get(0).setName(name);
-				System.out.println("What would you like to name your medium sized ship?(size 3)");
+				System.out.println("What would you like to name your battleship?(size 3)");
 				name = userString.nextLine();
 				ships.get(1).setName(name);
-				System.out.println("What would you like to name your shortest ship?(size 2)");
+				System.out.println("What would you like to name your destroyer?(size 2)");
 				name = userString.nextLine();
 				ships.get(2).setName(name);
 			}
