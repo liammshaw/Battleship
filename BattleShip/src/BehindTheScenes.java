@@ -90,8 +90,6 @@ public class BehindTheScenes
 				System.out.println("Enter your name");
 				name = userString.nextLine();
 				System.out.println("Welcome " + name + " to BattleShip");
-				System.out.println("Do you think you can beat me?");
-				System.out.println("We'll see");
 				System.out.println("There are 3 levels. Easy is a 5 by 5 grid with 3 ships.");
 				System.out.println("Medium is a 7 by 7 grid with 3 ships. Hard is a 10 by 10 grid with 3 ships");
 				System.out.println("Easy (1), Medium (2), Hard (3)");
@@ -104,7 +102,6 @@ public class BehindTheScenes
 						placeShips();
 						do 
 							{
-								printEnemysBattlefield();
 								userGuess();
 								evaluateGuess();
 								computerGuesses();
@@ -115,11 +112,35 @@ public class BehindTheScenes
 					}
 				else if (level == 2)
 					{
-						
+						medium();
+						nameShips();
+						generateRandomShips();
+						placeShips();
+						do 
+							{
+								userGuess();
+								evaluateGuess();
+								computerGuesses();
+								evaluateComputerGuess();
+								checkForOnes();
+							}while(continueGuessing == true);	
+						finishGame();
 					}
 				else 
 					{
-						
+						hard();
+						nameShips();
+						generateRandomShips();
+						placeShips();
+						do 
+							{
+								userGuess();
+								evaluateGuess();
+								computerGuesses();
+								evaluateComputerGuess();
+								checkForOnes();
+							}while(continueGuessing == true);	
+						finishGame();
 					}
 			}
 		public static void easy()
@@ -127,9 +148,9 @@ public class BehindTheScenes
 				ships.add(new BattleShip(4, "1",0));
 				ships.add(new BattleShip(3, "2",0));
 				ships.add(new BattleShip(2, "3",0));
-				ships.add(new BattleShip(4, "computer's longest ship", 0));
-				ships.add(new BattleShip(3, "computer's medium sized ship", 0));
-				ships.add(new BattleShip(2, "computer's shortest ship", 0));
+				ships.add(new BattleShip(4, "computer's aircraft carrier", 0));
+				ships.add(new BattleShip(3, "computer's battleship", 0));
+				ships.add(new BattleShip(2, "computer's destroyer", 0));
 				battlefield = new int [5][5];
 				enemysBattlefield = new int [5][5];
 			}
@@ -140,9 +161,9 @@ public class BehindTheScenes
 				ships.add(new BattleShip(4, "1",0));
 				ships.add(new BattleShip(3, "2",0));
 				ships.add(new BattleShip(2, "3",0));
-				ships.add(new BattleShip(4, "computer's longest ship", 0));
-				ships.add(new BattleShip(3, "computer's medium sized ship", 0));
-				ships.add(new BattleShip(2, "computer's smallest ship", 0));
+				ships.add(new BattleShip(4, "computer's aircraft carrier", 0));
+				ships.add(new BattleShip(3, "computer's battleship", 0));
+				ships.add(new BattleShip(2, "computer's destroyer", 0));
 			}
 		public static void hard()
 			{
@@ -151,9 +172,9 @@ public class BehindTheScenes
 				ships.add(new BattleShip(4, "1",0));
 				ships.add(new BattleShip(3, "2",0));
 				ships.add(new BattleShip(2, "3",0));
-				ships.add(new BattleShip(4, "computer's longest ship", 0));
-				ships.add(new BattleShip(3, "computer's medium sized ship", 0));
-				ships.add(new BattleShip(2, "computer's shortest ship", 0));
+				ships.add(new BattleShip(4, "computer's aircraft carrier", 0));
+				ships.add(new BattleShip(3, "computer's battleship", 0));
+				ships.add(new BattleShip(2, "computer's destroyer", 0));
 			}
 		public static void nameShips()
 			{
@@ -192,6 +213,7 @@ public class BehindTheScenes
 								battlefield[row][col] = 1;
 							}
 					}
+				printBattlefield();
 				System.out.println("");
 				for (int i = 0; i< 1; i++)
 					{
@@ -205,6 +227,7 @@ public class BehindTheScenes
 								battlefield[row][col] = 1;
 							}
 					}
+				printBattlefield();
 				System.out.println("");
 				for (int i = 0; i< 1; i++)
 					{
@@ -299,7 +322,7 @@ public class BehindTheScenes
 			}
 		public static void evaluateComputerGuess()
 			{
-				System.out.println("The computer guessed " + computerRow + ", " + computerCol);
+				System.out.println("The computer guessed " + (computerRow+1) + ", " + (computerCol+1));
 				if(battlefield[computerRow][computerCol] == 1)
 					{
 						rowSum = 0;
